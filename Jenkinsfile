@@ -32,8 +32,10 @@ pipeline {
             steps {
                 echo 'Pushing image to Docker Hub...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'docker login'
-                    sh 'docker image push kymmie/cw2-server:1.1'
+                    withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                        sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
+                        sh 'docker image push kymmie/cw2-server:1.1'
+                    }
                 }
             }
         }
