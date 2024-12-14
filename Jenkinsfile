@@ -70,7 +70,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Testing connection to production server - TODO'
                     sshagent(['ProductionServer']) {
-                        sh 'ls'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 ls'
                     }
                 }
             }
