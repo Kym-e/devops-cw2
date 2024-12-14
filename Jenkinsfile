@@ -41,16 +41,16 @@ pipeline {
         }
 
 
-        stage('Test connection to production server') {
-            steps {
-                sshagent(['my-ssh-key']) {
-                    echo 'Can I connect to production server'
-                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                        sh 'pwd'
-                    }
-                }
-            }
-        }
+//         stage('Test connection to production server') {
+//             steps {
+//                 sshagent(['my-ssh-key']) {
+//                     echo 'Can I connect to production server'
+//                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+//                         sh 'pwd'
+//                     }
+//                 }
+//             }
+//         }
 
         stage('Remove Container') {
             steps {
