@@ -2,36 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Docker Image') {
-        agent {dockerfile true}
+        stage('Build') {
             steps {
-                script {
-                    echo ' Building Docker Image...'
-                    sh 'node --version'
-                    
-                }
+                echo 'Building..'
             }
         }
-        stage('Test Container runs') {
+        stage('Test') {
             steps {
-                script {
-                    echo 'Running tests...'
-                }
+                echo 'Testing..'
             }
         }
-        stage('Push to Docker Hub') {
+        stage('Deploy') {
             steps {
-                script {
-                    echo 'Pushing Docker Image to Docker Hub...'
-                    }
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    echo 'Deploying to Kubernetes...'
-                }
+                echo 'Deploying....'
             }
         }
     }
