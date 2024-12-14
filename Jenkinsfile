@@ -3,10 +3,9 @@ pipeline {
 
     stages {
         stage('Build') {
-        agent {dockerfile true}
             steps {
                 echo 'Building image...'
-                sh 'docker build -t $DOCKERID/cw2-server:1.0 .'
+                app = docker.build("echo $DOCKERID/cw2-server:1.1 .")
             }
         }
         stage('Test') {
