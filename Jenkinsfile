@@ -64,6 +64,15 @@ pipeline {
             }
         }
 
+        stage('Test: Connect to Production Server') {
+            steps {
+                echo 'Testing connection to production server...'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    echo 'Testing connection to production server - TODO'
+                }
+            }
+        }
+
         stage('Remove Image') {
             steps {
                 echo 'Removing image...'
