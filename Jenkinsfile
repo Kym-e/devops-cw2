@@ -4,6 +4,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                script {
+                    def image = docker.build("kymmie/cw2-server:1.1", ".")
+                }
                 echo 'Building image... '
             }
         }
