@@ -7,7 +7,7 @@ pipeline {
             steps {
                 echo 'Building image... '
             }
-            app = docker.build("echo $DOCKERID/cw2-server:1.1 .")
+
         }
         stage('Test') {
             steps {
