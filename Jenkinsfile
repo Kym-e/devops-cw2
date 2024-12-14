@@ -48,10 +48,24 @@ pipeline {
             }
         }
 
+        stage('Check Container Removed') {
+            steps {
+                echo 'Checking container has been removed...'
+                sh 'docker ps -a'
+            }
+        }
+
         stage('Remove Image') {
             steps {
                 echo 'Removing image...'
                 sh 'docker rmi kymmie/cw2-server:1.1'
+            }
+        }
+
+        stage('Check Image Removed') {
+            steps {
+                echo 'Checking image has been removed...'
+                sh 'docker image ls -a'
             }
         }
     }
