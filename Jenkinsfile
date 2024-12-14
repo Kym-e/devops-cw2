@@ -32,6 +32,7 @@ pipeline {
             steps {
                 echo 'Pushing image to Docker Hub...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh 'docker login'
                     sh 'docker image push kymmie/cw2-server:1.1'
                 }
             }
