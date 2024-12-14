@@ -64,7 +64,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Testing connection to production server - TODO'
                     sshagent(['ProductionServer']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 ls'
+//                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 ls'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:1.1'
                     }
                 }
