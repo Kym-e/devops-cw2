@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-       stage('Push Image to Docker Hub') {
+        stage('Push Image to Docker Hub') {
             steps {
                 echo 'Pushing image to Docker Hub...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -40,17 +40,17 @@ pipeline {
             }
         }
 
+        //         stage('Test connection to production server') {
+        //             steps {
+        //                 sshagent(['my-ssh-key']) {
+        //                     echo 'Can I connect to production server'
+        //                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //                         sh 'pwd'
+        //                     }
+        //                 }
+        //             }
+        //         }
 
-//         stage('Test connection to production server') {
-//             steps {
-//                 sshagent(['my-ssh-key']) {
-//                     echo 'Can I connect to production server'
-//                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-//                         sh 'pwd'
-//                     }
-//                 }
-//             }
-//         }
 
         stage('Remove Container') {
             steps {
