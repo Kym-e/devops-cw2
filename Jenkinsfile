@@ -3,11 +3,9 @@ pipeline {
 
     stages {
         stage('Build') {
-
             steps {
                 echo 'Building image... '
             }
-
         }
         stage('Test') {
             steps {
