@@ -24,13 +24,16 @@ pipeline {
                 sh 'docker image ls -a'
                 sh 'docker ps -a'
                 sh 'docker ps -l'
+                sh 'curl -s http://localhost:8081'
             }
         }
 
-        stage('Test Container Runs') {
+       stage('Push Image to Docker Hub') {
             steps {
-                echo 'Testing container runs...'
-                sh 'curl -s http://localhost:8081'
+                echo 'Pushing image to Docker Hub...'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh 'docker image push kymmie/cw2-server:1.1'
+                }
             }
         }
 
