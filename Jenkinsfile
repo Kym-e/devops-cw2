@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     def image = docker.build("kymmie/cw2-server:1.1", ".")
@@ -10,19 +10,23 @@ pipeline {
                 echo 'Building image... '
             }
         }
-        stage('Test') {
+        stage('Test Container') {
             steps {
-                echo 'Testing.. TO BE IMPLEMENTED'
+                echo 'Testing... Run the container'
+                sh 'docker run -d -p 8081:8080 kymmie/cw2-server:1.1'
             }
         }
-        stage('Deploy') {
+        stage('Remove Container') {
             steps {
-                echo 'Deploying.... TO BE IMPLEMENTED'
+                echo 'Removing container...'
+                sh 'docker stop $(docker ps -a -q)'
+                sh 'docker rm $(docker ps -a -q)'
             }
         }
-        stage('Notify') {
+        stage('Remove Image') {
             steps {
-                echo 'Notifying.... TO BE IMPLEMENTED'
+                echo 'Removing image...'
+                sh 'docker rmi kymmie/cw2-server:1.1'
             }
         }
     }
