@@ -60,7 +60,6 @@ pipeline {
                 echo 'Deploying to Kubernetes...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Deploying to Kubernetes step - TODO'
-                    }
                 }
             }
         }
