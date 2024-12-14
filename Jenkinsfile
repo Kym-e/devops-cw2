@@ -69,6 +69,9 @@ pipeline {
                 echo 'Testing connection to production server...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Testing connection to production server - TODO'
+                    sshagent(['ProductionServer']) {
+                        sh 'ls'
+                    }
                 }
             }
         }
