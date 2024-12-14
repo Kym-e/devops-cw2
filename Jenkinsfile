@@ -10,12 +10,30 @@ pipeline {
                 echo 'Building image... '
             }
         }
-        stage('Test Container') {
+
+        stage('Run Container') {
             steps {
-                echo 'Testing... Run the container'
+                echo 'Run the container'
                 sh 'docker run -d -p 8081:8080 kymmie/cw2-server:1.1'
             }
         }
+
+        stage('Test Container Is Running') {
+            steps {
+                echo 'Testing container is running...'
+                sh 'docker image ls -a'
+                sh 'docker ps -a'
+                sh 'docker ps -l'
+            }
+        }
+
+        stage('Test Container Runs') {
+            steps {
+                echo 'Testing container runs...'
+                sh 'curl -s http://localhost:8081'
+            }
+        }
+
         stage('Remove Container') {
             steps {
                 echo 'Removing container...'
@@ -23,6 +41,7 @@ pipeline {
                 sh 'docker rm $(docker ps -a -q)'
             }
         }
+
         stage('Remove Image') {
             steps {
                 echo 'Removing image...'
