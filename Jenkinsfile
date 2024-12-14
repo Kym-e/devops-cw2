@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Test Container Is Running') {
+        stage('Test Container') {
             steps {
                 echo 'Testing container is running...'
                 sh 'docker image ls -a'
@@ -40,39 +40,24 @@ pipeline {
             }
         }
 
-        stage('Remove Container') {
-            steps {
-                echo 'Removing container...'
-                sh 'docker stop $(docker ps -a -q)'
-                sh 'docker rm $(docker ps -a -q)'
-                sh 'docker ps -a'
-            }
-        }
-
         stage('Deploy to Kubernetes') {
-            steps {
-                echo 'Deploying to Kubernetes...'
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    echo 'Deploying to Kubernetes step - TODO'
-                }
-            }
-        }
-
-        stage('Test: Connect to Production Server') {
             steps {
                 echo 'Testing connection to production server...'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    echo 'Testing connection to production server - TODO'
+                    echo 'Deploying to Kubernetes...'
                     sshagent(['ProductionServer']) {
-//                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 ls'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:1.1'
                     }
                 }
             }
         }
 
-        stage('Remove Image') {
+        stage('Remove Container and Image') {
             steps {
+                echo 'Removing container...'
+                sh 'docker stop $(docker ps -a -q)'
+                sh 'docker rm $(docker ps -a -q)'
+                sh 'docker ps -a'
                 echo 'Removing image...'
                 sh 'docker rmi kymmie/cw2-server:1.1'
                 sh 'docker image ls -a'
