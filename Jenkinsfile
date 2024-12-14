@@ -45,12 +45,6 @@ pipeline {
                 echo 'Removing container...'
                 sh 'docker stop $(docker ps -a -q)'
                 sh 'docker rm $(docker ps -a -q)'
-            }
-        }
-
-        stage('Check Container Removed') {
-            steps {
-                echo 'Checking container has been removed...'
                 sh 'docker ps -a'
             }
         }
@@ -71,6 +65,7 @@ pipeline {
                     echo 'Testing connection to production server - TODO'
                     sshagent(['ProductionServer']) {
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 ls'
+                        sh 'kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:1.1'
                     }
                 }
             }
@@ -80,12 +75,6 @@ pipeline {
             steps {
                 echo 'Removing image...'
                 sh 'docker rmi kymmie/cw2-server:1.1'
-            }
-        }
-
-        stage('Check Image Removed') {
-            steps {
-                echo 'Checking image has been removed...'
                 sh 'docker image ls -a'
             }
         }
