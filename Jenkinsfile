@@ -40,6 +40,18 @@ pipeline {
             }
         }
 
+
+        stage('Test connection to production server') {
+            steps {
+                sshagent(['my-ssh-key']) {
+                    echo 'Can I connect to production server'
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        sh 'pwd'
+                    }
+                }
+            }
+        }
+
         stage('Remove Container') {
             steps {
                 echo 'Removing container...'
@@ -52,6 +64,16 @@ pipeline {
             steps {
                 echo 'Checking container has been removed...'
                 sh 'docker ps -a'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Deploying to Kubernetes...'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    echo 'Deploying to Kubernetes step - TODO'
+                    }
+                }
             }
         }
 
