@@ -5,7 +5,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def image = docker.build("kymmie/cw2-server:1.1", ".")
+                    def image = docker.build("kymmie/cw2-server:${env.BUILD_NUMBER}", ".")
                 }
                 echo 'Building image... '
             }
@@ -14,7 +14,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 echo 'Run the container'
-                sh 'docker run -d -p 8081:8080 kymmie/cw2-server:1.1'
+                sh 'docker run -d -p 8081:8080 kymmie/cw2-server:${env.BUILD_NUMBER}'
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                         sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
-                        sh 'docker image push kymmie/cw2-server:1.1'
+                        sh 'docker image push kymmie/cw2-server:${env.BUILD_NUMBER}'
                     }
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Deploying to Kubernetes...'
                     sshagent(['ProductionServer']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:1.1'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:${env.BUILD_NUMBER}'
                     }
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
                 sh 'docker rm $(docker ps -a -q)'
                 sh 'docker ps -a'
                 echo 'Removing image...'
-                sh 'docker rmi kymmie/cw2-server:1.1'
+                sh 'docker rmi kymmie/cw2-server:${env.BUILD_NUMBER}'
                 sh 'docker image ls -a'
             }
         }
