@@ -46,7 +46,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     echo 'Deploying to Kubernetes...'
                     sshagent(['ProductionServer']) {
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@3.89.101.254 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:${env.BUILD_NUMBER}"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@100.28.192.123 kubectl set image deployments/cw2-server cw2-server=kymmie/cw2-server:${env.BUILD_NUMBER}"
                     }
                 }
             }
